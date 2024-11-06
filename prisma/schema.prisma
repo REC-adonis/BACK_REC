@@ -24,4 +24,16 @@ model user {
   resetPasswordExpiresAt  DateTime?
   verificationToken       String?
   verificationTokenExpiresAt DateTime?
+  shippingInfo            shipping_info?
+}
+
+model shipping_info {
+  shipping_id             Int       @id @default(autoincrement())
+  address                 String
+  city                    String
+  state                   String
+  postal_code             String
+  phone_number            String
+  user_id                 Int       @unique
+  user                    user      @relation(fields: [user_id], references: [user_id])
 }
