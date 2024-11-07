@@ -12,6 +12,9 @@
       `npx prisma generate`
    2. Aplicar migraciones a la base de datos.
       `npx prisma migrate dev`
+   3. Ejecutar la semilla
+      `npx prisma db seed`
+
 5. Iniciar servidor de desarrollo.
    `npm run dev`
 
