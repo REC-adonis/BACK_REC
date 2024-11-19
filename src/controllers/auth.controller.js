@@ -27,7 +27,7 @@ export const signup = async (req, res)=>{
             }
         });
         generateTokenAndSetCookie(res, user.user_id);
-        await sendVerificationEmail(user.email, verificationToken);
+        //await sendVerificationEmail(user.email, verificationToken);
         res.status(200).json({
 			    success: true,
 			    message: "Email verified successfully",
@@ -86,18 +86,16 @@ export const verifyEmail = async (req, res) => {
 export const login = async (req, res)=>{
     const {email, password} = req.body;
     try {
-      const user = await prisma.user.findUnique({where : {email: email,}});
+      const user = await prisma.user.findUnique({where : {email: email}});
+      console.log(user);
       if(!user){
-        res.status.json({succes: false, message:"Invalid credentials"});
+        return res.status(400).json({succes: false, message:"Invalid credentials"});
       }
       const isPasswordValid = await bcryptjs.compare(password, user.password);
       if(!isPasswordValid){
         return res.status(400).json({success: false, message: "Invalid credentials"});
       }
 
-      generateTokenAndSetCookie(res, user.user_id);
-
-      //update last login
       await prisma.user.update({
         where:{
           user_id:user.user_id
